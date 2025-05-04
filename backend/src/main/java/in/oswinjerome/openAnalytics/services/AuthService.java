@@ -11,6 +11,8 @@ import in.oswinjerome.openAnalytics.models.User;
 import in.oswinjerome.openAnalytics.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ import java.util.UUID;
 
 @Service
 public class AuthService {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
 
     private final UserService userService;
     private final UserRepository userRepository;
@@ -48,11 +52,13 @@ public class AuthService {
         User user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(()-> new EntityNotFoundException("User not found"));
 
         if(!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            logger.info("Password does not match for user {}", loginRequest.getEmail());
             throw new InvalidRequestException("Incorrect password");
         }
 
         String token = jwtService.generateToken(user.getEmail());
 
+        logger.info("User logged in {}", user.getEmail());
         return ResponseDTO.success(new LoginResponse(token));
 
     }
@@ -69,6 +75,7 @@ public class AuthService {
 
         userRepository.save(user);
 
+        logger.info("User registered in {}", user.getEmail());
         return ResponseDTO.success(new RegisterResponse(user));
     }
 }
