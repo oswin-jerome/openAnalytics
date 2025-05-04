@@ -1,5 +1,6 @@
 package in.oswinjerome.openAnalytics.configs;
 
+import in.oswinjerome.openAnalytics.filters.ApiKeyFilter;
 import in.oswinjerome.openAnalytics.filters.JwtFilter;
 import in.oswinjerome.openAnalytics.services.UserService;
 import org.springframework.context.annotation.Bean;
@@ -30,26 +31,31 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain configure(HttpSecurity http, JwtFilter jwtFilter) throws Exception {
+    public SecurityFilterChain configure(HttpSecurity http, JwtFilter jwtFilter, ApiKeyFilter apiKeyFilter) throws Exception {
 
         http.csrf(AbstractHttpConfigurer::disable);
         http.httpBasic(Customizer.withDefaults());
 
-        http.sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.authorizeHttpRequests(c->c.
-                requestMatchers("/auth/login","/auth/register","/actuator","/actuator/**").permitAll()
-                        .requestMatchers(
-                                "/auth/login",
-                                "/auth/register",
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html"
-                        ).permitAll()
+        http.authorizeHttpRequests(c -> c.
+                requestMatchers("/auth/login", "/auth/register", "/actuator", "/actuator/**").permitAll()
+                .requestMatchers(
+                        "/auth/login",
+                        "/auth/register",
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html"
+                ).permitAll()
+                .requestMatchers(
+                        "/api/v1",
+                        "/api/v1/**"
+                ).permitAll()
 
                 .anyRequest().authenticated());
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(apiKeyFilter, JwtFilter.class);
         return http.build();
     }
 

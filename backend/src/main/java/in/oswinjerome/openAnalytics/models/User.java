@@ -31,6 +31,9 @@ public class User implements UserDetails {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    @OneToMany(mappedBy = "owner")
+    private List<Project> projects;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
