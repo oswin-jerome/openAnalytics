@@ -34,6 +34,7 @@ public class SecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http, JwtFilter jwtFilter, ApiKeyFilter apiKeyFilter) throws Exception {
 
         http.csrf(AbstractHttpConfigurer::disable);
+        http.cors(AbstractHttpConfigurer::disable);
         http.httpBasic(Customizer.withDefaults());
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

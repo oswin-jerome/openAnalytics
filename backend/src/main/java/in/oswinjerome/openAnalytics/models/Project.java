@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "projects")
@@ -26,6 +27,14 @@ public class Project {
     @JoinColumn(name = "owner_id")
     @JsonIgnore
     private User owner;
+
+    @OneToMany(mappedBy = "project")
+    @JsonIgnore
+    private List<Session> sessions;
+
+    @OneToMany(mappedBy = "project")
+    @JsonIgnore
+    private List<Event> events;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

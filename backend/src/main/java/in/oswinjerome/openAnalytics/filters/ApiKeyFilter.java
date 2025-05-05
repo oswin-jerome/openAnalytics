@@ -31,6 +31,9 @@ public class ApiKeyFilter extends OncePerRequestFilter {
         }
 
         String apiKey = request.getHeader("x-api-key");
+        if(apiKey == null) {
+            apiKey = request.getParameter("x-api-key");
+        }
         System.out.println(apiKey);
         if(apiKey==null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"Missing api key");
@@ -39,6 +42,8 @@ public class ApiKeyFilter extends OncePerRequestFilter {
 
         Optional<Project> project = projectRepository.findByApiKey(apiKey);
         if(project.isEmpty()){
+            System.out.println("Invalid api key");
+
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"Invalid api key");
             return;
         }

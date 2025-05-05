@@ -11,4 +11,8 @@ public interface SessionRepository extends JpaRepository<Session, String> {
     Optional<Session> findBySessionId(String sessionId);
     Optional<Session> findByProjectAndSessionId(Project project, String sessionId);
 
+    int countByProject(Project project);
+
+    int countDistinctByProject(Project project);
+
 }

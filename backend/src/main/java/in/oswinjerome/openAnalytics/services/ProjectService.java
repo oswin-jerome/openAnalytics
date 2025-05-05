@@ -1,28 +1,36 @@
 package in.oswinjerome.openAnalytics.services;
 
 import in.oswinjerome.openAnalytics.dtos.requests.StoreProjectRequest;
+import in.oswinjerome.openAnalytics.dtos.responses.ProjectMetricsDTO;
+import in.oswinjerome.openAnalytics.dtos.responses.ProjectOverviewDTO;
 import in.oswinjerome.openAnalytics.dtos.responses.ResponseDTO;
 import in.oswinjerome.openAnalytics.exceptions.UnauthorizedException;
 import in.oswinjerome.openAnalytics.models.Project;
 import in.oswinjerome.openAnalytics.models.User;
+import in.oswinjerome.openAnalytics.repositories.EventRepository;
 import in.oswinjerome.openAnalytics.repositories.ProjectRepository;
+import in.oswinjerome.openAnalytics.repositories.SessionRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
 
     private final AuthService authService;
     private final ProjectRepository projectRepository;
+    private final EventRepository eventRepository;
+    private final SessionRepository sessionRepository;
 
-    public ProjectService(AuthService authService, ProjectRepository projectRepository) {
+    public ProjectService(AuthService authService, ProjectRepository projectRepository, EventRepository eventRepository, SessionRepository sessionRepository) {
         this.authService = authService;
         this.projectRepository = projectRepository;
+        this.eventRepository = eventRepository;
+        this.sessionRepository = sessionRepository;
     }
 
     public ResponseDTO<List<Project>> getCurrentUserProjects() {
@@ -51,5 +59,29 @@ public class ProjectService {
 
         projectRepository.delete(project);
         return ResponseDTO.success();
+    }
+
+    public ResponseDTO<ProjectOverviewDTO> getCurrentUserProjectById(String id) {
+
+        User currentUser = authService.getCurrentUser();
+
+        Project project = projectRepository.findByIdAndOwner(id,currentUser).orElseThrow(()-> new EntityNotFoundException("Project not found"));
+
+        ProjectOverviewDTO overviewDTO = ProjectOverviewDTO.from(project);
+        overviewDTO.setMetrics(getProjectMetrics(project));
+        return ResponseDTO.success(overviewDTO);
+    }
+
+    private ProjectMetricsDTO getProjectMetrics(Project project) {
+
+        ProjectMetricsDTO metricsDTO = new ProjectMetricsDTO();
+        metricsDTO.setTotalEvents(eventRepository.countByProject(project));
+        metricsDTO.setTotalSessions(sessionRepository.countByProject(project));
+        metricsDTO.setTotalVisitors(sessionRepository.countByProject(project));
+        metricsDTO.setEventCounts(eventRepository.findDistinctEventNames(project));
+        metricsDTO.setTopPages(eventRepository.findTopPages(project).stream().map((o)-> (String) o[0]).collect(Collectors.toCollection(ArrayList::new)));
+        metricsDTO.setTopReferrers(eventRepository.findTopReferrers(project).stream().map((o)-> (String) o[0]).collect(Collectors.toCollection(ArrayList::new)));
+
+        return metricsDTO;
     }
 }

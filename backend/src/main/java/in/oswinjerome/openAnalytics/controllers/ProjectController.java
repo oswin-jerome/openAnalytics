@@ -1,6 +1,7 @@
 package in.oswinjerome.openAnalytics.controllers;
 
 import in.oswinjerome.openAnalytics.dtos.requests.StoreProjectRequest;
+import in.oswinjerome.openAnalytics.dtos.responses.ProjectOverviewDTO;
 import in.oswinjerome.openAnalytics.dtos.responses.ResponseDTO;
 import in.oswinjerome.openAnalytics.models.Project;
 import in.oswinjerome.openAnalytics.services.ProjectService;
@@ -24,6 +25,12 @@ public class ProjectController {
     @GetMapping
     public ResponseDTO<List<Project>> getProjects() {
         return projectService.getCurrentUserProjects();
+    }
+
+    @GetMapping("{id}")
+    public ResponseDTO<ProjectOverviewDTO> getProject(@PathVariable String id) {
+
+        return projectService.getCurrentUserProjectById(id);
     }
 
     @PostMapping
