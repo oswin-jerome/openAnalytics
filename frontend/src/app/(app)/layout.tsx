@@ -1,6 +1,7 @@
 "use client";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 import { BowArrow, ChartAreaIcon, ChevronDown, DnaIcon, Home, SearchSlashIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -10,6 +11,7 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
   const path = usePathname();
   return (
     <SidebarProvider>
+      <Toaster />
       <Sidebar variant="floating" collapsible="icon" className="">
         <SidebarHeader className="">
           {/* <SidebarMenu className="">
@@ -59,7 +61,7 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
           </SidebarGroup>
         </SidebarContent>
         <SidebarFooter>
-          <p>Footer</p>
+          <p></p>
         </SidebarFooter>
       </Sidebar>
       <div className="p-4 relative w-full">

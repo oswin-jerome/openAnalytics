@@ -44,17 +44,17 @@
 }
 
 :root {
-  --color-app-50: #fbf3f6;
-  --color-app-100: #f7e4e9;
-  --color-app-200: #edc4d0;
-  --color-app-300: #e199ae;
-  --color-app-400: #cd567a;
-  --color-app-500: #431422;
-  --color-app-600: #2f0e18;
-  --color-app-700: #2f0e18;
-  --color-app-800: #2f0e18;
-  --color-app-900: #000000;
-  --color-app-950: #000000;
+  --color-app-50: #f4f2fd;
+  --color-app-100: #ece9fb;
+  --color-app-200: #d2cbf6;
+  --color-app-300: #b8adf1;
+  --color-app-400: #9281e9;
+  --color-app-500: #5438dc;
+  --color-app-600: #482ada;
+  --color-app-700: #3d22c3;
+  --color-app-800: #321ca0;
+  --color-app-900: #231471;
+  --color-app-950: #170d4a;
 
   --radius: 0.625rem;
   --background: var(--color-app-50);
@@ -80,7 +80,7 @@
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: var(--color-app-500);
+  --sidebar: var(--color-app-800);
   --sidebar-foreground: var(--color-white);
   --sidebar-primary: oklch(0.208 0.042 265.755);
   --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
