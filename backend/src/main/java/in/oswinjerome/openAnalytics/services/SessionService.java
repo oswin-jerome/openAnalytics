@@ -6,9 +6,11 @@ import in.oswinjerome.openAnalytics.models.Project;
 import in.oswinjerome.openAnalytics.models.Session;
 import in.oswinjerome.openAnalytics.repositories.SessionRepository;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class SessionService {
     private final SessionRepository sessionRepository;
 
@@ -19,6 +21,7 @@ public class SessionService {
     public ResponseDTO<Session> createSession(@Valid StoreSessionRequest request, Project project) {
         System.out.println(request.getMetaData());
         Session session = sessionRepository.findByProjectAndSessionId(project,request.getSessionId()).orElseGet(()->{
+            log.info("Creating new session");
             Session session1 = new Session();
             session1.setSessionId(request.getSessionId());
             session1.setProject(project);

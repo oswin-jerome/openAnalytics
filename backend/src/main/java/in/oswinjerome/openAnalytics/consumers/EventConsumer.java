@@ -30,7 +30,7 @@ public class EventConsumer {
 
     @KafkaListener(topics = "events", groupId = "open_analytics_group")
     public void consume(StoreEventRequest request) {
-
+        log.info("Consuming event: {}", request);
         StoreSessionRequest req = new StoreSessionRequest();
         req.setSessionId(request.getSessionId());
         req.setUserAgent(request.getUserAgent());
@@ -39,6 +39,7 @@ public class EventConsumer {
         Project project = projectRepository.findById(request.getProjectId()).orElse(null);
 
         if (project == null) {
+            log.error("Cannot find project {}", request.getProjectId());
             throw new InvalidRequestException("Project not found, API key in invalid");
         }
 
@@ -55,6 +56,8 @@ public class EventConsumer {
         event.setUrl(request.getEvent().getUrl());
 
         eventRepository.save(event);
+
+        log.info("Saved event: {}", event);
 
     }
 
