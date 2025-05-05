@@ -10,3 +10,21 @@ OpenAnalytics is an analytics platform that tracks web page traffic and custom e
 - **Authentication**: JWT-based authentication
 - **Logging**: Logback for logging (stored in a file)
 - **Security**: Spring Security with JWT and API Key support
+
+## API
+
+http://localhost:8080/swagger-ui/index.html
+
+## Project Setup
+
+- ### Requirements
+  - PostGres
+  - Kafka
+  - Java 21
+  - NodeJS
+- ### Frontend
+  1.  cd `/frontend`
+  2.  `npm install`
+  3.  `npm run dev`
+- ### Backend
+  1.  Just run it using any IDE (for dev)
