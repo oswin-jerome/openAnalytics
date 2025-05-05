@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ListStart, LogIn, Newspaper, Signpost } from "lucide-react";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "OpenAnalytics",
@@ -25,9 +26,11 @@ export default function RootLayout({
           </ul>
         </div>
         <div className="flex gap-4">
-          <Button>
-            <LogIn /> Login
-          </Button>
+          <Link href={"/login"}>
+            <Button>
+              <LogIn /> Login
+            </Button>
+          </Link>
           <Button variant={"outline"}>
             <Newspaper /> Register
           </Button>

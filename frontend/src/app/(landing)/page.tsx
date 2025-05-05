@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GitBranch, Rocket } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -16,10 +17,12 @@ export default function Home() {
           </p>
 
           <div className="mt-16 space-x-4">
-            <Button className=" px-10">
-              <Rocket />
-              Get Started
-            </Button>
+            <Link href={"/dashboard"}>
+              <Button className=" px-10">
+                <Rocket />
+                Get Started
+              </Button>
+            </Link>
             <Button variant={"outline"} className=" px-10">
               <GitBranch />
               Get Source Code
