@@ -5,6 +5,7 @@ import in.oswinjerome.openAnalytics.dtos.responses.ProjectOverviewDTO;
 import in.oswinjerome.openAnalytics.dtos.responses.ResponseDTO;
 import in.oswinjerome.openAnalytics.models.Event;
 import in.oswinjerome.openAnalytics.models.Project;
+import in.oswinjerome.openAnalytics.models.Session;
 import in.oswinjerome.openAnalytics.services.ProjectService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -48,6 +49,11 @@ public class ProjectController {
     public ResponseDTO<List<Event>> getEventsByProject(@PathVariable String id) {
 
         return projectService.getEventsByProjectId(id);
+    }
+   @GetMapping("{id}/sessions")
+    public ResponseDTO<List<Session>> getSessionsByProjectId(@PathVariable String id) {
+
+        return projectService.getSessionsByProjectId(id);
     }
 
 }

@@ -7,6 +7,7 @@ import in.oswinjerome.openAnalytics.dtos.responses.ResponseDTO;
 import in.oswinjerome.openAnalytics.exceptions.UnauthorizedException;
 import in.oswinjerome.openAnalytics.models.Event;
 import in.oswinjerome.openAnalytics.models.Project;
+import in.oswinjerome.openAnalytics.models.Session;
 import in.oswinjerome.openAnalytics.models.User;
 import in.oswinjerome.openAnalytics.repositories.EventRepository;
 import in.oswinjerome.openAnalytics.repositories.ProjectRepository;
@@ -94,5 +95,15 @@ public class ProjectService {
         List<Event> events = eventRepository.findByProject(project);
 
         return ResponseDTO.success(events);
+    }
+
+    public ResponseDTO<List<Session>> getSessionsByProjectId(String id) {
+        User currentUser = authService.getCurrentUser();
+
+        Project project = projectRepository.findByIdAndOwner(id,currentUser).orElseThrow(()-> new EntityNotFoundException("Project not found"));
+
+        List<Session> sessions = sessionRepository.findByProjectOrderByUpdatedAtDesc(project);
+
+        return ResponseDTO.success(sessions);
     }
 }

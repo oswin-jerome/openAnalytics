@@ -16,3 +16,9 @@ export function formatDate(date: Date | string) {
   };
   return new Date(date).toLocaleDateString("en-US", options);
 }
+
+export function formatSeconds(seconds: number, locale = "en") {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m > 0 ? m + "m " : ""}${s}s`.trim();
+}

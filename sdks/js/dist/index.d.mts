@@ -12,13 +12,17 @@ declare class Tracker {
     sendPageView(): void;
     private send;
     generateSessionId(): string;
+    generateOrUpdateSessionId(): string;
 }
-declare const tracker: Tracker;
+declare let tracker: Tracker | null;
 
 declare global {
     interface Window {
         analytics?: typeof tracker;
     }
 }
+declare const analytics: {
+    initTracker: (options: TrackerOptions) => void;
+};
 
-export { tracker as default };
+export { analytics };

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Data
@@ -21,4 +22,9 @@ public class StoreEventRequest {
    private String ipAddress;
 
    private String projectId;
+
+   @Type(JsonType.class)
+   private Map<String, Object> metaData = new HashMap<>();
+
+
 }

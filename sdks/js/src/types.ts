@@ -10,6 +10,7 @@ export interface APIPayload {
   userAgent: string;
   ipAddress: string;
   projectId?: string;
+  metaData?: any;
 }
 
 export interface EventPayload {

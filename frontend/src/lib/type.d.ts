@@ -73,3 +73,14 @@ export interface Event {
   metaData: Map<string, string>;
   createdAt: Date;
 }
+
+export interface Session {
+  id: string;
+  sessionId: string;
+  userAgent: string;
+  ipAddress: string;
+  metaData: Map<string, string>;
+  createdAt: Date;
+  updatedAt: Date;
+  duration: number;
+}

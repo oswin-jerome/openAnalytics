@@ -26,8 +26,10 @@ const EventsPage = async ({ params }: { params: PageParams }) => {
             <TableHeader className="">
               <TableRow>
                 <TableHead className="w-[100px]">Name</TableHead>
+                <TableHead>Type</TableHead>
                 <TableHead>Page</TableHead>
                 <TableHead>Url</TableHead>
+                <TableHead>Referrer</TableHead>
                 <TableHead>CreatedAt</TableHead>
               </TableRow>
             </TableHeader>
@@ -35,8 +37,10 @@ const EventsPage = async ({ params }: { params: PageParams }) => {
               {events.map((event, index) => (
                 <TableRow key={"event_" + index}>
                   <TableCell className="font-medium">{event.name}</TableCell>
+                  <TableCell>{event.eventType}</TableCell>
                   <TableCell>{event.page}</TableCell>
                   <TableCell>{event.url}</TableCell>
+                  <TableCell>{event.referrer}</TableCell>
                   <TableCell>{formatDate(event.createdAt)}</TableCell>
                 </TableRow>
               ))}

@@ -1,10 +1,12 @@
-import { tracker } from "./tracker";
+import { initTracker, tracker } from "./tracker";
 
 declare global {
   interface Window {
     analytics?: typeof tracker;
   }
 }
-if (window != undefined) window.analytics = tracker;
+// if (window != undefined) window.analytics = tracker;
 
-export default tracker;
+export const analytics = {
+  initTracker,
+};

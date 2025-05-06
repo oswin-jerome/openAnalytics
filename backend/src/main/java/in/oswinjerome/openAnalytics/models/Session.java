@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -41,5 +42,10 @@ public class Session {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public Long getDuration(){
+
+        return Duration.between(createdAt, updatedAt).getSeconds();
+    }
 
 }
