@@ -25,4 +25,10 @@ public interface SessionRepository extends JpaRepository<Session, String> {
     @Query("SELECT s.userAgent, COUNT(s) FROM Session s WHERE s.project = :project GROUP BY s.userAgent ORDER BY COUNT(s) DESC")
     List<Object[]> findUserAgentCounts(@Param("project") Project project);
 
+    @Query("SELECT function('jsonb_extract_path_text', s.metaData, 'os'), COUNT(s) FROM Session s WHERE s.project = :project GROUP BY function('jsonb_extract_path_text', s.metaData, 'os') ORDER BY COUNT(s) DESC")
+    List<Object[]> findOsCounts(@Param("project") Project project);
+
+    @Query("SELECT function('jsonb_extract_path_text', s.metaData, 'device'), COUNT(s) FROM Session s WHERE s.project = :project GROUP BY function('jsonb_extract_path_text', s.metaData, 'device') ORDER BY COUNT(s) DESC")
+    List<Object[]> findDeviceCounts(@Param("project") Project project);
+
 }

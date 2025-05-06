@@ -4,6 +4,8 @@ import TopPages from "./boxes/topPages";
 import { PageParams } from "@/lib/type";
 import TopReferrers from "./boxes/topReferrers";
 import { UserAgentCounts } from "./boxes/userAgentCounts";
+import { OsCount } from "./boxes/osCount";
+import { DeviceCount } from "./boxes/deviceCount";
 
 const DashboardPage = async ({ params }: { params: PageParams }) => {
   const { proj_id } = await params;
@@ -22,9 +24,8 @@ const DashboardPage = async ({ params }: { params: PageParams }) => {
         <TopPages topPages={res.data.metrics?.topPages} />
         <TopReferrers topReferrers={res.data.metrics?.topReferrers} />
         <UserAgentCounts userAgentCounts={res.data.metrics?.userAgentCounts} />
-
-        <div>OS</div>
-        <div>Device Type</div>
+        <OsCount userAgentCounts={res.data.metrics?.osCounts} />
+        <DeviceCount userAgentCounts={res.data.metrics?.deviceCounts} />
         <div>Realtime visitors</div>
       </section>
     </main>

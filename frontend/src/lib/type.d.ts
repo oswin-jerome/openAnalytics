@@ -86,6 +86,8 @@ export interface Metrics {
   topReferrers: EventCount[];
   eventCounts: EventCount[];
   userAgentCounts: EventCount[];
+  osCounts: EventCount[];
+  deviceCounts: EventCount[];
 }
 
 export interface EventCount {

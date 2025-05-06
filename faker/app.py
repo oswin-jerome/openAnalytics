@@ -10,6 +10,7 @@ conn = psycopg2.connect("dbname=openAnalytics user=oswinjerome password=password
 cur = conn.cursor()
 browsers = ["Chrome", "Firefox", "Safari", "Edge", "Brave"]
 devices = ["Desktop", "Mobile", "Tablet"]
+os = ["Windows", "macOS", "Linux", "Android", "iOS"]
 project_id = "15d58e0e-c4c0-4a00-83c0-e78a997a8f58"
 
 for day_offset in range(365):
@@ -20,7 +21,8 @@ for day_offset in range(365):
     meta =  json.dumps({
 				"browser": random.choice(browsers),
 				"device": random.choice(devices),
-				"user_agent": faker.user_agent()
+				"user_agent": faker.user_agent(),
+                "os": random.choice(os),
 			})
 
     cur.execute("""

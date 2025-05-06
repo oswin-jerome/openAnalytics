@@ -22,3 +22,8 @@ export function formatSeconds(seconds: number, locale = "en") {
   const s = seconds % 60;
   return `${m > 0 ? m + "m " : ""}${s}s`.trim();
 }
+
+export const getColor = (index: number) => {
+  const colors = ["var(--color-red-400)", "var(--color-app-500)", "var(--color-green-400)", "var(--color-orange-400)", "var(--color-blue-400)", "var(--color-purple-400)"];
+  return colors[index % colors.length];
+};

@@ -87,6 +87,11 @@ public class ProjectService {
         metricsDTO.setTopPages(eventRepository.findTopPages(project).stream().map((o)-> (String) o[0]).collect(Collectors.toCollection(ArrayList::new)));
         metricsDTO.setTopReferrers(eventRepository.findTopReferrers(project).stream().map((o)-> new KeyVal<String,Long>((String)o[0],(Long)o[1])).collect(Collectors.toCollection(ArrayList::new)));
         metricsDTO.setUserAgentCounts(sessionRepository.findUserAgentCounts(project).stream().map((o)-> new KeyVal<String,Long>((String)o[0],(Long)o[1])).collect(Collectors.toCollection(ArrayList::new)));
+
+//        FIXME: clean up this code.
+        metricsDTO.setOsCounts(sessionRepository.findOsCounts(project).stream().map((o)-> new KeyVal<String,Long>((String)o[0],(Long)o[1])).collect(Collectors.toCollection(ArrayList::new)));
+        metricsDTO.setDeviceCounts(sessionRepository.findDeviceCounts(project).stream().map((o)-> new KeyVal<String,Long>((String)o[0],(Long)o[1])).collect(Collectors.toCollection(ArrayList::new)));
+
         return metricsDTO;
     }
 

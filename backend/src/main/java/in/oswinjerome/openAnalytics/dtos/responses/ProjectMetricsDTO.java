@@ -14,4 +14,6 @@ public class ProjectMetricsDTO {
     private List<KeyVal<String,Long>> topReferrers;
     private List<KeyVal<String,Long>> eventCounts;
     private List<KeyVal<String,Long>> userAgentCounts;
+    private List<KeyVal<String,Long>> osCounts;
+    private List<KeyVal<String,Long>> deviceCounts;
 }
