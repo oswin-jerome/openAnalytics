@@ -4,16 +4,37 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { signIn } from "next-auth/react";
 export function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
+  const {
+    register,
+    handleSubmit,
+
+    formState: { errors, isLoading, isSubmitting },
+  } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
   return (
     <form
       className={cn("flex flex-col gap-6", className)}
       {...props}
-      onSubmit={(e) => {
-        e.preventDefault();
-        toast.success("Login form submitted");
-      }}
+      onSubmit={handleSubmit(async (data) => {
+        const res = await signIn("credentials", {
+          ...data,
+          redirect: true,
+          callbackUrl: "/",
+        });
+        if (res?.ok) {
+          toast.success("Login successful");
+        } else {
+          toast.error(res?.error || "Login failed");
+        }
+      })}
     >
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Login to your account</h1>
@@ -22,7 +43,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
       <div className="grid gap-6">
         <div className="grid gap-3">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="m@example.com" required />
+          <Input id="email" type="email" {...register("email", { required: true })} />
         </div>
         <div className="grid gap-3">
           <div className="flex items-center">
@@ -31,9 +52,9 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
               Forgot your password?
             </a>
           </div>
-          <Input id="password" type="password" required />
+          <Input id="password" type="password" {...register("password", { required: true })} />
         </div>
-        <Button type="submit" className="w-full">
+        <Button type="submit" loading={isSubmitting} disabled={isSubmitting} className="w-full">
           Login
         </Button>
         <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">

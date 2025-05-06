@@ -5,6 +5,7 @@ import in.oswinjerome.openAnalytics.dtos.responses.ProjectMetricsDTO;
 import in.oswinjerome.openAnalytics.dtos.responses.ProjectOverviewDTO;
 import in.oswinjerome.openAnalytics.dtos.responses.ResponseDTO;
 import in.oswinjerome.openAnalytics.exceptions.UnauthorizedException;
+import in.oswinjerome.openAnalytics.models.Event;
 import in.oswinjerome.openAnalytics.models.Project;
 import in.oswinjerome.openAnalytics.models.User;
 import in.oswinjerome.openAnalytics.repositories.EventRepository;
@@ -83,5 +84,15 @@ public class ProjectService {
         metricsDTO.setTopReferrers(eventRepository.findTopReferrers(project).stream().map((o)-> (String) o[0]).collect(Collectors.toCollection(ArrayList::new)));
 
         return metricsDTO;
+    }
+
+    public ResponseDTO<List<Event>> getEventsByProjectId(String id) {
+        User currentUser = authService.getCurrentUser();
+
+        Project project = projectRepository.findByIdAndOwner(id,currentUser).orElseThrow(()-> new EntityNotFoundException("Project not found"));
+
+        List<Event> events = eventRepository.findByProject(project);
+
+        return ResponseDTO.success(events);
     }
 }

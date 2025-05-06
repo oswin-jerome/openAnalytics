@@ -10,6 +10,10 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, String> {
+
+    List<Event> findByProject(Project project);
+
+
     int countByProject(Project project);
 
     @Query("SELECT e.page, COUNT(e) FROM Event e WHERE e.project = :project GROUP BY e.page ORDER BY COUNT(e) DESC LIMIT 5")

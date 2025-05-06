@@ -17,7 +17,7 @@ export default function Home() {
           </p>
 
           <div className="mt-16 space-x-4">
-            <Link href={"/dashboard"}>
+            <Link href={"/projects"}>
               <Button className=" px-10">
                 <Rocket />
                 Get Started

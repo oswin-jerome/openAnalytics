@@ -3,6 +3,7 @@ package in.oswinjerome.openAnalytics.controllers;
 import in.oswinjerome.openAnalytics.dtos.requests.StoreProjectRequest;
 import in.oswinjerome.openAnalytics.dtos.responses.ProjectOverviewDTO;
 import in.oswinjerome.openAnalytics.dtos.responses.ResponseDTO;
+import in.oswinjerome.openAnalytics.models.Event;
 import in.oswinjerome.openAnalytics.models.Project;
 import in.oswinjerome.openAnalytics.services.ProjectService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -41,6 +42,12 @@ public class ProjectController {
     @DeleteMapping("{id}")
     public ResponseDTO<Void> deleteProject(@PathVariable String id) {
         return projectService.delete(id);
+    }
+
+    @GetMapping("{id}/events")
+    public ResponseDTO<List<Event>> getEventsByProject(@PathVariable String id) {
+
+        return projectService.getEventsByProjectId(id);
     }
 
 }

@@ -3,6 +3,7 @@ import { ChartArea, GalleryVerticalEnd } from "lucide-react";
 import { LoginForm } from "@/components/login-form";
 import Link from "next/link";
 import { Toaster } from "@/components/ui/sonner";
+import { unstable_ViewTransition as ViewTransition } from "react";
 
 export default function LoginPage() {
   return (
@@ -12,10 +13,12 @@ export default function LoginPage() {
         <div className="flex flex-col gap-4 p-6 md:p-10">
           <div className="flex justify-center gap-2 md:justify-start">
             <Link href="/" className="flex items-center gap-2 font-medium">
-              <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
-                <ChartArea className="size-4" />
-              </div>
-              OpenAnalytics
+              <ViewTransition name="logo-transition">
+                <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
+                  <ChartArea className="size-4" />
+                </div>
+                <span>OpenAnalytics</span>
+              </ViewTransition>
             </Link>
           </div>
           <div className="flex flex-1 items-center justify-center">
