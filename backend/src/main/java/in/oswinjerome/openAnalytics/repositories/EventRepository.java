@@ -3,6 +3,8 @@ package in.oswinjerome.openAnalytics.repositories;
 import in.oswinjerome.openAnalytics.dtos.KeyVal;
 import in.oswinjerome.openAnalytics.models.Event;
 import in.oswinjerome.openAnalytics.models.Project;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,7 +13,7 @@ import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, String> {
 
-    List<Event> findByProject(Project project);
+    Page<Event> findByProject(Project project, Pageable pageable);
 
 
     int countByProject(Project project);
@@ -24,5 +26,6 @@ public interface EventRepository extends JpaRepository<Event, String> {
 
     @Query("SELECT new in.oswinjerome.openAnalytics.dtos.KeyVal(e.name, COUNT(e)) FROM Event e WHERE e.project = :project GROUP BY e.name ORDER BY COUNT(e)")
     List<KeyVal<String,Long>> findDistinctEventNames(@Param("project") Project project);
+
 
 }

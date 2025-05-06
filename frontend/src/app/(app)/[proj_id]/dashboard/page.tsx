@@ -2,6 +2,8 @@ import { getProject } from "@/actions/projects";
 import { VisitorsChart } from "./charts/visitors";
 import TopPages from "./boxes/topPages";
 import { PageParams } from "@/lib/type";
+import TopReferrers from "./boxes/topReferrers";
+import { UserAgentCounts } from "./boxes/userAgentCounts";
 
 const DashboardPage = async ({ params }: { params: PageParams }) => {
   const { proj_id } = await params;
@@ -16,8 +18,14 @@ const DashboardPage = async ({ params }: { params: PageParams }) => {
   return (
     <main>
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
-        <VisitorsChart />
+        {/* <VisitorsChart /> */}
         <TopPages topPages={res.data.metrics?.topPages} />
+        <TopReferrers topReferrers={res.data.metrics?.topReferrers} />
+        <UserAgentCounts userAgentCounts={res.data.metrics?.userAgentCounts} />
+
+        <div>OS</div>
+        <div>Device Type</div>
+        <div>Realtime visitors</div>
       </section>
     </main>
   );

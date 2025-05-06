@@ -14,7 +14,7 @@ const EventsPage = async ({ params }: { params: PageParams }) => {
     );
   }
 
-  const events = res.data;
+  const { content: events } = res.data;
 
   return (
     <>

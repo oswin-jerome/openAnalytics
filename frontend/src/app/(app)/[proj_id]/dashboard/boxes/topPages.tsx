@@ -7,7 +7,6 @@ const TopPages = ({ topPages }: { topPages: string[] | undefined }) => {
     <Card>
       <CardHeader>
         <CardTitle>Top Pages</CardTitle>
-        <CardDescription>Last 30 days</CardDescription>
       </CardHeader>
       <CardContent>
         <Table>

@@ -11,6 +11,7 @@ public class ProjectMetricsDTO {
     private Integer totalSessions;
     private Integer totalVisitors;
     private List<String> topPages;
-    private List<String> topReferrers;
+    private List<KeyVal<String,Long>> topReferrers;
     private List<KeyVal<String,Long>> eventCounts;
+    private List<KeyVal<String,Long>> userAgentCounts;
 }

@@ -9,6 +9,10 @@ import in.oswinjerome.openAnalytics.models.Session;
 import in.oswinjerome.openAnalytics.services.ProjectService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,15 +49,23 @@ public class ProjectController {
         return projectService.delete(id);
     }
 
+
     @GetMapping("{id}/events")
-    public ResponseDTO<List<Event>> getEventsByProject(@PathVariable String id) {
+    public ResponseDTO<Page<Event>> getEventsByProject(@PathVariable String id, @PageableDefault(
+            size = 30,
+            direction = Sort.Direction.DESC
+    ) Pageable pageable) {
 
-        return projectService.getEventsByProjectId(id);
-    }
-   @GetMapping("{id}/sessions")
-    public ResponseDTO<List<Session>> getSessionsByProjectId(@PathVariable String id) {
-
-        return projectService.getSessionsByProjectId(id);
+        return projectService.getEventsByProjectId(id, pageable);
     }
 
+
+    @GetMapping("{id}/sessions")
+    public ResponseDTO<Page<Session>> getSessionsByProjectId(@PathVariable String id, @PageableDefault(
+            size = 30,
+            direction = Sort.Direction.DESC
+    ) Pageable pageable) {
+
+        return projectService.getSessionsByProjectId(id, pageable);
+    }
 }

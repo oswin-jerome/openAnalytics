@@ -1,5 +1,6 @@
 package in.oswinjerome.openAnalytics.services;
 
+import in.oswinjerome.openAnalytics.dtos.KeyVal;
 import in.oswinjerome.openAnalytics.dtos.requests.StoreProjectRequest;
 import in.oswinjerome.openAnalytics.dtos.responses.ProjectMetricsDTO;
 import in.oswinjerome.openAnalytics.dtos.responses.ProjectOverviewDTO;
@@ -13,6 +14,8 @@ import in.oswinjerome.openAnalytics.repositories.EventRepository;
 import in.oswinjerome.openAnalytics.repositories.ProjectRepository;
 import in.oswinjerome.openAnalytics.repositories.SessionRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -82,28 +85,37 @@ public class ProjectService {
         metricsDTO.setTotalVisitors(sessionRepository.countByProject(project));
         metricsDTO.setEventCounts(eventRepository.findDistinctEventNames(project));
         metricsDTO.setTopPages(eventRepository.findTopPages(project).stream().map((o)-> (String) o[0]).collect(Collectors.toCollection(ArrayList::new)));
-        metricsDTO.setTopReferrers(eventRepository.findTopReferrers(project).stream().map((o)-> (String) o[0]).collect(Collectors.toCollection(ArrayList::new)));
-
+        metricsDTO.setTopReferrers(eventRepository.findTopReferrers(project).stream().map((o)-> new KeyVal<String,Long>((String)o[0],(Long)o[1])).collect(Collectors.toCollection(ArrayList::new)));
+        metricsDTO.setUserAgentCounts(sessionRepository.findUserAgentCounts(project).stream().map((o)-> new KeyVal<String,Long>((String)o[0],(Long)o[1])).collect(Collectors.toCollection(ArrayList::new)));
         return metricsDTO;
     }
 
-    public ResponseDTO<List<Event>> getEventsByProjectId(String id) {
+    public ResponseDTO<Page<Event>> getEventsByProjectId(String id, Pageable pageable) {
         User currentUser = authService.getCurrentUser();
 
         Project project = projectRepository.findByIdAndOwner(id,currentUser).orElseThrow(()-> new EntityNotFoundException("Project not found"));
 
-        List<Event> events = eventRepository.findByProject(project);
+        Page<Event> events = eventRepository.findByProject(project,pageable);
 
         return ResponseDTO.success(events);
     }
 
-    public ResponseDTO<List<Session>> getSessionsByProjectId(String id) {
+    public ResponseDTO<Page<Session>> getSessionsByProjectId(String id, Pageable pageable) {
         User currentUser = authService.getCurrentUser();
 
         Project project = projectRepository.findByIdAndOwner(id,currentUser).orElseThrow(()-> new EntityNotFoundException("Project not found"));
-
-        List<Session> sessions = sessionRepository.findByProjectOrderByUpdatedAtDesc(project);
+        Page<Session> sessions = sessionRepository.findByProjectOrderByUpdatedAtDesc(project,pageable);
 
         return ResponseDTO.success(sessions);
+    }
+
+    public ResponseDTO<Page<Event>> getTopReferrersByProject(String id) {
+
+        User currentUser = authService.getCurrentUser();
+        Project project = projectRepository.findByIdAndOwner(id,currentUser).orElseThrow(()-> new EntityNotFoundException("Project not found"));
+
+
+
+        return null;
     }
 }

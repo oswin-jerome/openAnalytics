@@ -7,6 +7,8 @@
 ### Init
 
 ```js
+import { analytics } from "open-analytics-sdk";
+
 analytics.initTracker({
   apiKey: "d2756dc9-e15c-4f04-9a6b-1f8d3bebf5eb",
   endpoint: "http://localhost:8080",

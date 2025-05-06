@@ -6,6 +6,35 @@ export interface ApiResponse<T> {
   data: T;
 }
 
+export interface PageableResponse<C> {
+  totalPages: number;
+  totalElements: number;
+  first: boolean;
+  last: boolean;
+  size: number;
+  content: C[];
+  number: number;
+  sort: Sort;
+  pageable: Pageable;
+  numberOfElements: number;
+  empty: boolean;
+}
+
+export interface Pageable {
+  offset: number;
+  sort: Sort;
+  unpaged: boolean;
+  paged: boolean;
+  pageNumber: number;
+  pageSize: number;
+}
+
+export interface Sort {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
+}
+
 type PageParams = Promise<{ proj_id: string }>;
 
 export interface Error {
@@ -54,8 +83,9 @@ export interface Metrics {
   totalSessions: number;
   totalVisitors: number;
   topPages: string[];
-  topReferrers: string[];
+  topReferrers: EventCount[];
   eventCounts: EventCount[];
+  userAgentCounts: EventCount[];
 }
 
 export interface EventCount {

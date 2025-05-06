@@ -24,7 +24,7 @@ const AppLayout = async ({ children, params }: { children: ReactNode; params: Pa
     <SidebarProvider>
       <Toaster />
       <AppSideBar />
-      <div className="p-4 relative w-full">
+      <div className="p-4 relative w-full overflow-hidden">
         <div className="mb-4 flex items-center ">
           <SidebarTrigger />
           {" |"}
@@ -38,7 +38,7 @@ const AppLayout = async ({ children, params }: { children: ReactNode; params: Pa
           </div>
         </div>
 
-        <div>{children}</div>
+        <div className="overflow-clip">{children}</div>
       </div>
     </SidebarProvider>
   );
