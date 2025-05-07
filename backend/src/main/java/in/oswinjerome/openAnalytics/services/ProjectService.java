@@ -9,7 +9,6 @@ import in.oswinjerome.openAnalytics.dtos.responses.ResponseDTO;
 import in.oswinjerome.openAnalytics.exceptions.UnauthorizedException;
 import in.oswinjerome.openAnalytics.models.Event;
 import in.oswinjerome.openAnalytics.models.Project;
-import in.oswinjerome.openAnalytics.models.Session;
 import in.oswinjerome.openAnalytics.models.User;
 import in.oswinjerome.openAnalytics.repositories.EventRepository;
 import in.oswinjerome.openAnalytics.repositories.ProjectRepository;
@@ -69,9 +68,7 @@ public class ProjectService {
 
     public ResponseDTO<ProjectOverviewDTO> getCurrentUserProjectById(String id) {
 
-        User currentUser = authService.getCurrentUser();
-
-        Project project = projectRepository.findByIdAndOwner(id,currentUser).orElseThrow(()-> new EntityNotFoundException("Project not found"));
+        Project project = getCurrentUserProjectByProjectId(id);
 
         ProjectOverviewDTO overviewDTO = ProjectOverviewDTO.from(project);
         overviewDTO.setMetrics(getProjectMetrics(project));
@@ -96,10 +93,8 @@ public class ProjectService {
         return metricsDTO;
     }
 
-    public ResponseDTO<Page<Event>> getEventsByProjectId(String id, Pageable pageable) {
-        User currentUser = authService.getCurrentUser();
-
-        Project project = projectRepository.findByIdAndOwner(id,currentUser).orElseThrow(()-> new EntityNotFoundException("Project not found"));
+    public ResponseDTO<Page<Event>> getEventsByProjectId(String id, String name, Pageable pageable) {
+        Project project = getCurrentUserProjectByProjectId(id);
 
         Page<Event> events = eventRepository.findByProject(project,pageable);
 
@@ -107,9 +102,7 @@ public class ProjectService {
     }
 
     public ResponseDTO<Page<SessionListDTO>> getSessionsByProjectId(String id, Pageable pageable) {
-        User currentUser = authService.getCurrentUser();
-
-        Project project = projectRepository.findByIdAndOwner(id,currentUser).orElseThrow(()-> new EntityNotFoundException("Project not found"));
+        Project project = getCurrentUserProjectByProjectId(id);
         Page<SessionListDTO> sessions = sessionRepository.findByProjectOrderByUpdatedAtDesc(project,pageable);
 
         return ResponseDTO.success(sessions);
@@ -117,11 +110,14 @@ public class ProjectService {
 
     public ResponseDTO<Page<Event>> getTopReferrersByProject(String id) {
 
-        User currentUser = authService.getCurrentUser();
-        Project project = projectRepository.findByIdAndOwner(id,currentUser).orElseThrow(()-> new EntityNotFoundException("Project not found"));
-
+        getCurrentUserProjectByProjectId(id);
 
 
         return null;
+    }
+
+    private Project getCurrentUserProjectByProjectId(String id) {
+        User currentUser = authService.getCurrentUser();
+        return projectRepository.findByIdAndOwner(id,currentUser).orElseThrow(()-> new EntityNotFoundException("Project not found"));
     }
 }

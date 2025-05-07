@@ -53,12 +53,16 @@ public class ProjectController {
 
 
     @GetMapping("{id}/events")
-    public ResponseDTO<Page<Event>> getEventsByProject(@PathVariable String id, @PageableDefault(
-            size = 30,
-            direction = Sort.Direction.DESC
-    ) Pageable pageable) {
+    public ResponseDTO<Page<Event>> getEventsByProject(
+            @PathVariable String id,
+            @RequestParam(defaultValue = "all") String name,
+            @PageableDefault(
+                    size = 30,
+                    direction = Sort.Direction.DESC
+            ) Pageable pageable
+    ) {
 
-        return projectService.getEventsByProjectId(id, pageable);
+        return projectService.getEventsByProjectId(id,name, pageable);
     }
 
 
