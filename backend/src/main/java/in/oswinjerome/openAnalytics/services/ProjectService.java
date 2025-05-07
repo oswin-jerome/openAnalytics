@@ -13,11 +13,14 @@ import in.oswinjerome.openAnalytics.models.User;
 import in.oswinjerome.openAnalytics.repositories.EventRepository;
 import in.oswinjerome.openAnalytics.repositories.ProjectRepository;
 import in.oswinjerome.openAnalytics.repositories.SessionRepository;
+import in.oswinjerome.openAnalytics.specifications.EventSpecifications;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -66,37 +69,47 @@ public class ProjectService {
         return ResponseDTO.success();
     }
 
-    public ResponseDTO<ProjectOverviewDTO> getCurrentUserProjectById(String id) {
+    public ResponseDTO<ProjectOverviewDTO> getCurrentUserProjectById(String id, String durationShort) {
+
+        LocalDateTime[] duration = UtilService.fromShortString(durationShort);
 
         Project project = getCurrentUserProjectByProjectId(id);
 
         ProjectOverviewDTO overviewDTO = ProjectOverviewDTO.from(project);
-        overviewDTO.setMetrics(getProjectMetrics(project));
+        overviewDTO.setMetrics(getProjectMetrics(project,duration));
         return ResponseDTO.success(overviewDTO);
     }
 
-    private ProjectMetricsDTO getProjectMetrics(Project project) {
+    private ProjectMetricsDTO getProjectMetrics(Project project, LocalDateTime[] duration) {
 
         ProjectMetricsDTO metricsDTO = new ProjectMetricsDTO();
-        metricsDTO.setTotalEvents(eventRepository.countByProject(project));
-        metricsDTO.setTotalSessions(sessionRepository.countByProject(project));
-        metricsDTO.setTotalVisitors(sessionRepository.countByProject(project));
-        metricsDTO.setEventCounts(eventRepository.findDistinctEventNames(project));
-        metricsDTO.setTopPages(eventRepository.findTopPages(project).stream().map((o)-> (String) o[0]).collect(Collectors.toCollection(ArrayList::new)));
-        metricsDTO.setTopReferrers(eventRepository.findTopReferrers(project).stream().map((o)-> new KeyVal<String,Long>((String)o[0],(Long)o[1])).collect(Collectors.toCollection(ArrayList::new)));
-        metricsDTO.setUserAgentCounts(sessionRepository.findUserAgentCounts(project).stream().map((o)-> new KeyVal<String,Long>((String)o[0],(Long)o[1])).collect(Collectors.toCollection(ArrayList::new)));
+        metricsDTO.setTotalEvents(eventRepository.countByProjectAndCreatedAtBetween(project,duration[0],duration[1]));
+
+        metricsDTO.setTotalSessions(sessionRepository.countByProjectAndCreatedAtBetween(project,duration[0],duration[1]));
+
+        metricsDTO.setTotalVisitors(sessionRepository.countByProjectAndCreatedAtBetween(project,duration[0],duration[1]));
+
+        metricsDTO.setEventCounts(eventRepository.findDistinctEventNames(project,duration[0],duration[1]));
+
+        metricsDTO.setTopPages(eventRepository.findTopPages(project,duration[0],duration[1]).stream().map((o)-> (String) o[0]).collect(Collectors.toCollection(ArrayList::new)));
+
+        metricsDTO.setTopReferrers(eventRepository.findTopReferrers(project,duration[0],duration[1]).stream().map((o)-> new KeyVal<String,Long>((String)o[0],(Long)o[1])).collect(Collectors.toCollection(ArrayList::new)));
+
+        metricsDTO.setUserAgentCounts(sessionRepository.findUserAgentCounts(project,duration[0],duration[1]).stream().map((o)-> new KeyVal<String,Long>((String)o[0],(Long)o[1])).collect(Collectors.toCollection(ArrayList::new)));
 
 //        FIXME: clean up this code.
-        metricsDTO.setOsCounts(sessionRepository.findOsCounts(project).stream().map((o)-> new KeyVal<String,Long>((String)o[0],(Long)o[1])).collect(Collectors.toCollection(ArrayList::new)));
-        metricsDTO.setDeviceCounts(sessionRepository.findDeviceCounts(project).stream().map((o)-> new KeyVal<String,Long>((String)o[0],(Long)o[1])).collect(Collectors.toCollection(ArrayList::new)));
+        metricsDTO.setOsCounts(sessionRepository.findOsCounts(project,duration[0],duration[1]).stream().map((o)-> new KeyVal<String,Long>((String)o[0],(Long)o[1])).collect(Collectors.toCollection(ArrayList::new)));
+        metricsDTO.setDeviceCounts(sessionRepository.findDeviceCounts(project,duration[0],duration[1]).stream().map((o)-> new KeyVal<String,Long>((String)o[0],(Long)o[1])).collect(Collectors.toCollection(ArrayList::new)));
 
         return metricsDTO;
     }
 
     public ResponseDTO<Page<Event>> getEventsByProjectId(String id, String name, Pageable pageable) {
         Project project = getCurrentUserProjectByProjectId(id);
+        Specification<Event> eventSpecification = Specification.where(EventSpecifications.withProject(project))
+                .and(EventSpecifications.withName(name));
 
-        Page<Event> events = eventRepository.findByProject(project,pageable);
+        Page<Event> events = eventRepository.findAll(eventSpecification,pageable);
 
         return ResponseDTO.success(events);
     }

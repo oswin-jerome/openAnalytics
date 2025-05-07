@@ -41,6 +41,8 @@ my:
   topic1: events
 swagger:
   server-url: http://localhost:8080
-
+springdoc:
+  swagger-ui:
+    persistAuthorization: true
 server:
   port: 8080

@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -36,9 +37,9 @@ public class ProjectController {
     }
 
     @GetMapping("{id}")
-    public ResponseDTO<ProjectOverviewDTO> getProject(@PathVariable String id) {
+    public ResponseDTO<ProjectOverviewDTO> getProject(@PathVariable String id, @RequestParam(defaultValue = "24hrs") String duration) {
 
-        return projectService.getCurrentUserProjectById(id);
+        return projectService.getCurrentUserProjectById(id,duration);
     }
 
     @PostMapping

@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import UserPopup from "@/components/userPopup";
 import { ChartArea, ChartBar, ListStart, LogIn, Newspaper, Signpost } from "lucide-react";
 import type { Metadata } from "next";
 import { useSession } from "next-auth/react";
@@ -18,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   // FIXME: Move to separate component
-  const { status } = useSession();
+  const { status, data } = useSession();
 
   return (
     <main className="text-primary">
@@ -46,19 +47,20 @@ export default function RootLayout({
               </Button>
             </Link>
             <Link href={"/register"}>
-            <Button variant={"outline"}>
-              <Newspaper /> Register
-            </Button>
+              <Button variant={"outline"}>
+                <Newspaper /> Register
+              </Button>
             </Link>
           </div>
         )}
         {status === "authenticated" && (
-          <div className="flex gap-4">
+          <div className="flex gap-4 items-center">
             <Link href={"/projects"}>
               <Button>
                 <ChartBar /> Dashboard
               </Button>
             </Link>
+            <UserPopup user={data.user} />
           </div>
         )}
       </nav>
