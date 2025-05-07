@@ -33,7 +33,7 @@ public class EventConsumer {
         this.sessionRepository = sessionRepository1;
     }
 
-    @KafkaListener(topics = "events", groupId = "open_analytics_group")
+    @KafkaListener(topics = "${my.topic1}", groupId = "${spring.kafka.consumer.group-id}")
     public void consume(StoreEventRequest request) {
         log.info("Consuming event: {}", request);
         StoreSessionRequest req = new StoreSessionRequest();

@@ -10,11 +10,15 @@ import in.oswinjerome.openAnalytics.repositories.EventRepository;
 import in.oswinjerome.openAnalytics.repositories.SessionRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EventService {
+
+    @Value("${my.topic1}")
+    private String eventTopic;
 
     private final KafkaTemplate<String, StoreEventRequest> kafkaTemplate;
 
@@ -28,7 +32,7 @@ public class EventService {
 
         request.setProjectId(project.getId());
 
-        kafkaTemplate.send("events",request.getSessionId(), request);
+        kafkaTemplate.send(eventTopic,request.getSessionId(), request);
 
         return ResponseDTO.success();
     }

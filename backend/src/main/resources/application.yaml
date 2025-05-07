@@ -32,10 +32,15 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: "*"
+      client-id: open_analytics_client1
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
+my:
+  topic1: events
+swagger:
+  server-url: http://localhost:8080
 
 server:
   port: 8080
