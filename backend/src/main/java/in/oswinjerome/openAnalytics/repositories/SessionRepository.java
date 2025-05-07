@@ -1,5 +1,6 @@
 package in.oswinjerome.openAnalytics.repositories;
 
+import in.oswinjerome.openAnalytics.dtos.SessionListDTO;
 import in.oswinjerome.openAnalytics.models.Project;
 import in.oswinjerome.openAnalytics.models.Session;
 import org.springframework.data.domain.Page;
@@ -13,7 +14,8 @@ import java.util.Optional;
 
 public interface SessionRepository extends JpaRepository<Session, String> {
 
-    Page<Session> findByProjectOrderByUpdatedAtDesc(Project project, Pageable pageable);
+    @Query("SELECT new in.oswinjerome.openAnalytics.dtos.SessionListDTO(s,COUNT(e)) FROM Session s JOIN Event e ON e.session = s WHERE s.project = :project GROUP BY s")
+    Page<SessionListDTO> findByProjectOrderByUpdatedAtDesc(Project project, Pageable pageable);
 
     Optional<Session> findBySessionId(String sessionId);
     Optional<Session> findByProjectAndSessionId(Project project, String sessionId);

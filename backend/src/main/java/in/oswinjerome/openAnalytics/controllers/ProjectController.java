@@ -1,5 +1,6 @@
 package in.oswinjerome.openAnalytics.controllers;
 
+import in.oswinjerome.openAnalytics.dtos.SessionListDTO;
 import in.oswinjerome.openAnalytics.dtos.requests.StoreProjectRequest;
 import in.oswinjerome.openAnalytics.dtos.responses.ProjectOverviewDTO;
 import in.oswinjerome.openAnalytics.dtos.responses.ResponseDTO;
@@ -8,6 +9,7 @@ import in.oswinjerome.openAnalytics.models.Project;
 import in.oswinjerome.openAnalytics.models.Session;
 import in.oswinjerome.openAnalytics.services.ProjectService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -61,7 +63,8 @@ public class ProjectController {
 
 
     @GetMapping("{id}/sessions")
-    public ResponseDTO<Page<Session>> getSessionsByProjectId(@PathVariable String id, @PageableDefault(
+    @Tag(name = "Session")
+    public ResponseDTO<Page<SessionListDTO>> getSessionsByProjectId(@PathVariable String id, @PageableDefault(
             size = 30,
             direction = Sort.Direction.DESC
     ) Pageable pageable) {

@@ -1,6 +1,7 @@
 package in.oswinjerome.openAnalytics.services;
 
 import in.oswinjerome.openAnalytics.dtos.KeyVal;
+import in.oswinjerome.openAnalytics.dtos.SessionListDTO;
 import in.oswinjerome.openAnalytics.dtos.requests.StoreProjectRequest;
 import in.oswinjerome.openAnalytics.dtos.responses.ProjectMetricsDTO;
 import in.oswinjerome.openAnalytics.dtos.responses.ProjectOverviewDTO;
@@ -105,11 +106,11 @@ public class ProjectService {
         return ResponseDTO.success(events);
     }
 
-    public ResponseDTO<Page<Session>> getSessionsByProjectId(String id, Pageable pageable) {
+    public ResponseDTO<Page<SessionListDTO>> getSessionsByProjectId(String id, Pageable pageable) {
         User currentUser = authService.getCurrentUser();
 
         Project project = projectRepository.findByIdAndOwner(id,currentUser).orElseThrow(()-> new EntityNotFoundException("Project not found"));
-        Page<Session> sessions = sessionRepository.findByProjectOrderByUpdatedAtDesc(project,pageable);
+        Page<SessionListDTO> sessions = sessionRepository.findByProjectOrderByUpdatedAtDesc(project,pageable);
 
         return ResponseDTO.success(sessions);
     }

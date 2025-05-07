@@ -115,4 +115,5 @@ export interface Session {
   createdAt: Date;
   updatedAt: Date;
   duration: number;
+  noOfEvents?: number;
 }

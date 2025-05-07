@@ -3,6 +3,7 @@ package in.oswinjerome.openAnalytics.repositories;
 import in.oswinjerome.openAnalytics.dtos.KeyVal;
 import in.oswinjerome.openAnalytics.models.Event;
 import in.oswinjerome.openAnalytics.models.Project;
+import in.oswinjerome.openAnalytics.models.Session;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +15,8 @@ import java.util.List;
 public interface EventRepository extends JpaRepository<Event, String> {
 
     Page<Event> findByProject(Project project, Pageable pageable);
+
+    List<Event> findBySession(Session session);
 
 
     int countByProject(Project project);
