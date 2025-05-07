@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 export function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
   const {
     register,
@@ -72,9 +73,9 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
       </div>
       <div className="text-center text-sm">
         Don&apos;t have an account?{" "}
-        <a href="/register" className="underline underline-offset-4">
+        <Link href="/register" className="underline underline-offset-4">
           Sign up
-        </a>
+        </Link>
       </div>
     </form>
   );
