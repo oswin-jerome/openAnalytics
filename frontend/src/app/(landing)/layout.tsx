@@ -45,9 +45,11 @@ export default function RootLayout({
                 <LogIn /> Login
               </Button>
             </Link>
+            <Link href={"/register"}>
             <Button variant={"outline"}>
               <Newspaper /> Register
             </Button>
+            </Link>
           </div>
         )}
         {status === "authenticated" && (
