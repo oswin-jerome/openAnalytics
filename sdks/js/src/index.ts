@@ -1,4 +1,5 @@
 import { initTracker, tracker } from "./tracker";
+export * from "./react";
 
 declare global {
   interface Window {

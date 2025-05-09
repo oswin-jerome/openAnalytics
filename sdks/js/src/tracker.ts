@@ -11,7 +11,9 @@ class Tracker {
     this.options = options;
     this.sessionId = this.generateOrUpdateSessionId();
     this.initialized = true;
-    this.sendPageView();
+    if (this.options.autoTrackPageViews) {
+      this.sendPageView();
+    }
 
     document.addEventListener("click", (e) => {
       const target = e.target as HTMLElement;
@@ -40,7 +42,7 @@ class Tracker {
     });
   }
 
-  private send(data: EventPayload) {
+  send(data: EventPayload) {
     if (!this.initialized) return;
     const { browser, device, os, version } = detectClient();
     const payload: APIPayload = {

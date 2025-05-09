@@ -1,8 +1,5 @@
-interface TrackerOptions {
-    apiKey: string;
-    endpoint: string;
-    meta?: Record<string, any>;
-}
+import { T as TrackerOptions, E as EventPayload } from './index-C8PXg8hN.js';
+export { u as useTrackPageView } from './index-C8PXg8hN.js';
 
 declare class Tracker {
     private options;
@@ -10,7 +7,7 @@ declare class Tracker {
     private initialized;
     init(options: TrackerOptions): void;
     sendPageView(): void;
-    private send;
+    send(data: EventPayload): void;
     generateSessionId(): string;
     generateOrUpdateSessionId(): string;
 }

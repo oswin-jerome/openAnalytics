@@ -1,6 +1,7 @@
 export interface TrackerOptions {
   apiKey: string;
   endpoint: string;
+  autoTrackPageViews?: boolean;
   meta?: Record<string, any>;
 }
 
