@@ -56,7 +56,7 @@ public class ProjectController {
     @GetMapping("{id}/events")
     public ResponseDTO<Page<Event>> getEventsByProject(
             @PathVariable String id,
-            @RequestParam(defaultValue = "all") String name,
+            @RequestParam(defaultValue = "") String name,
             @PageableDefault(
                     size = 30,
                     direction = Sort.Direction.DESC
@@ -71,7 +71,8 @@ public class ProjectController {
     @Tag(name = "Session")
     public ResponseDTO<Page<SessionListDTO>> getSessionsByProjectId(@PathVariable String id, @PageableDefault(
             size = 30,
-            direction = Sort.Direction.DESC
+            direction = Sort.Direction.DESC,
+            sort = "createdAt"
     ) Pageable pageable) {
 
         return projectService.getSessionsByProjectId(id, pageable);

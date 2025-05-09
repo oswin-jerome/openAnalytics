@@ -3,9 +3,14 @@ import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, Tabl
 import { PageParams } from "@/lib/type";
 import { formatDate } from "@/lib/utils";
 
-const EventsPage = async ({ params }: { params: PageParams }) => {
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
+const EventsPage = async ({ params, searchParams }: { params: PageParams; searchParams: SearchParams }) => {
   const { proj_id } = await params;
-  const res = await getEvents(proj_id);
+  const search = await searchParams;
+  const res = await getEvents(proj_id, {
+    name: (search.name as string) ?? "",
+  });
   if (!res.success) {
     return (
       <div className="container mx-auto px-4 py-8">

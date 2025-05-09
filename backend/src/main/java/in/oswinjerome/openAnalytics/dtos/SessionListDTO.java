@@ -28,10 +28,7 @@ public class SessionListDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Long noOfEvents;
-    public Long getDuration(){
-
-        return Duration.between(createdAt, updatedAt).getSeconds();
-    }
+    private Long duration;
 
 
     public SessionListDTO(Session session,Long noOfEvents) {
@@ -40,9 +37,11 @@ public class SessionListDTO {
         this.userAgent = session.getUserAgent();
         this.ipAddress = session.getIpAddress();
         this.metaData = session.getMetaData();
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        this.createdAt = session.getCreatedAt();
+        this.updatedAt = session.getUpdatedAt();
         this.noOfEvents = noOfEvents;
+
+        this.duration = Duration.between(createdAt, updatedAt).getSeconds();
     }
 
 }
