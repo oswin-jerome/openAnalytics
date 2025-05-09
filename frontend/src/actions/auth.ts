@@ -1,20 +1,19 @@
-// "use server";
+"use server";
 
-// import { PageableResponse } from "@/lib/api";
-// import { fetchHelper } from "@/lib/fetchHelper";
-// import { ApiResponse, User, UserInfoDTO } from "@/lib/type";
+import { fetchHelper } from "@/lib/fetchHelper";
+import { ApiResponse, User } from "@/lib/type";
 
-// export const register = async (formData: { name: string; email: string; password: string; confirmPassword: string; type: String }) => {
-//   const res = await fetchHelper(process.env.API_URL + "/auth/register", {
-//     method: "post",
+export const registerUser = async (formData: { name: string; email: string; password: string }) => {
+  const res = await fetchHelper(process.env.API_URL + "/auth/register", {
+    method: "post",
 
-//     body: JSON.stringify({ ...formData }),
-//   });
+    body: JSON.stringify({ ...formData }),
+  });
 
-//   const data: ApiResponse<User> = await res.json();
+  const data: ApiResponse<User> = await res.json();
 
-//   return data;
-// };
+  return data;
+};
 
 // export const getCurrentUserInfo = async () => {
 //   const res = await fetchHelper(process.env.API_URL + "/users/me", {
