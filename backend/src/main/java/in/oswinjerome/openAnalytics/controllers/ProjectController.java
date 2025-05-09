@@ -1,5 +1,6 @@
 package in.oswinjerome.openAnalytics.controllers;
 
+import in.oswinjerome.openAnalytics.dtos.SessionListDTO;
 import in.oswinjerome.openAnalytics.dtos.requests.StoreProjectRequest;
 import in.oswinjerome.openAnalytics.dtos.responses.ProjectOverviewDTO;
 import in.oswinjerome.openAnalytics.dtos.responses.ResponseDTO;
@@ -8,6 +9,7 @@ import in.oswinjerome.openAnalytics.models.Project;
 import in.oswinjerome.openAnalytics.models.Session;
 import in.oswinjerome.openAnalytics.services.ProjectService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -34,9 +37,9 @@ public class ProjectController {
     }
 
     @GetMapping("{id}")
-    public ResponseDTO<ProjectOverviewDTO> getProject(@PathVariable String id) {
+    public ResponseDTO<ProjectOverviewDTO> getProject(@PathVariable String id, @RequestParam(defaultValue = "24hrs") String duration) {
 
-        return projectService.getCurrentUserProjectById(id);
+        return projectService.getCurrentUserProjectById(id,duration);
     }
 
     @PostMapping
@@ -51,19 +54,25 @@ public class ProjectController {
 
 
     @GetMapping("{id}/events")
-    public ResponseDTO<Page<Event>> getEventsByProject(@PathVariable String id, @PageableDefault(
-            size = 30,
-            direction = Sort.Direction.DESC
-    ) Pageable pageable) {
+    public ResponseDTO<Page<Event>> getEventsByProject(
+            @PathVariable String id,
+            @RequestParam(defaultValue = "") String name,
+            @PageableDefault(
+                    size = 30,
+                    direction = Sort.Direction.DESC
+            ) Pageable pageable
+    ) {
 
-        return projectService.getEventsByProjectId(id, pageable);
+        return projectService.getEventsByProjectId(id,name, pageable);
     }
 
 
     @GetMapping("{id}/sessions")
-    public ResponseDTO<Page<Session>> getSessionsByProjectId(@PathVariable String id, @PageableDefault(
+    @Tag(name = "Session")
+    public ResponseDTO<Page<SessionListDTO>> getSessionsByProjectId(@PathVariable String id, @PageableDefault(
             size = 30,
-            direction = Sort.Direction.DESC
+            direction = Sort.Direction.DESC,
+            sort = "createdAt"
     ) Pageable pageable) {
 
         return projectService.getSessionsByProjectId(id, pageable);

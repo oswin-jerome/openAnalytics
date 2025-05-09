@@ -31,6 +31,7 @@ const EventsPage = async ({ params }: { params: PageParams }) => {
                 <TableHead>Duration</TableHead>
                 <TableHead>createdAt</TableHead>
                 <TableHead>Last Update</TableHead>
+                <TableHead>Events</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody className="">
@@ -41,6 +42,7 @@ const EventsPage = async ({ params }: { params: PageParams }) => {
                   <TableCell>{formatSeconds(session.duration)}</TableCell>
                   <TableCell>{formatDate(session.createdAt)}</TableCell>
                   <TableCell>{formatDate(session.updatedAt)}</TableCell>
+                  <TableCell>{session.noOfEvents}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

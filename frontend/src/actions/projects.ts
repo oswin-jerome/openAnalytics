@@ -12,8 +12,8 @@ export const getProjects = async () => {
   return data;
 };
 
-export const getProject = async (proj_id: string) => {
-  const res = await fetchHelper(process.env.API_URL + `/projects/${proj_id}`, {
+export const getProject = async (proj_id: string, duration = "24hrs") => {
+  const res = await fetchHelper(process.env.API_URL + `/projects/${proj_id}?duration=${duration}`, {
     method: "get",
   });
 

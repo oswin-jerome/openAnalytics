@@ -1,17 +1,16 @@
-import RegisterForm  from "@/components/register-form";
+import RegisterForm from "@/components/register-form";
 import Link from "next/link";
-import { ChartArea } from 'lucide-react';
+import { ChartArea } from "lucide-react";
 import { unstable_ViewTransition as ViewTransition } from "react";
 
 const RegisterPage = () => {
   return (
-    <div >
-    <div className="min-h-svh grid lg:grid-cols-2">
-      <div className="bg-[var(--color-app-500)] relative hidden lg:block">
-      </div>
-      <div className="flex flex-col gap-6  p-4 w-full">
-          <div className="p-4 flex justify-start">     
-             <Link href="/" className="flex items-center gap-2 font-medium">
+    <div>
+      <div className="min-h-svh grid lg:grid-cols-2">
+        <div className="bg-[var(--color-app-500)] relative hidden lg:block"></div>
+        <div className="flex flex-col gap-6  p-4 w-full">
+          <div className="p-4 flex justify-start">
+            <Link href="/" className="flex items-center gap-2 font-medium">
               <ViewTransition name="logo-transition">
                 <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
                   <ChartArea className="size-4" />
@@ -19,16 +18,16 @@ const RegisterPage = () => {
                 <span>OpenAnalytics</span>
               </ViewTransition>
             </Link>
+          </div>
+          <div className=" h-full w-full flex items-center justify-center">
+            <div className=" max-w-xs w-full">
+              <RegisterForm />
             </div>
-        <div className=" h-full w-full flex items-center justify-center">
-        <div className=" max-w-xs w-full">
-        <RegisterForm/>
-        </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  )
+  );
 };
 
 export default RegisterPage;

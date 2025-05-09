@@ -38,7 +38,7 @@ const AppLayout = async ({ children, params }: { children: ReactNode; params: Pa
           </div>
         </div>
 
-        <div className="overflow-clip">{children}</div>
+        <div className="">{children}</div>
       </div>
     </SidebarProvider>
   );

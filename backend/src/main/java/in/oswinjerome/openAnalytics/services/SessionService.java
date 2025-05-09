@@ -2,20 +2,27 @@ package in.oswinjerome.openAnalytics.services;
 
 import in.oswinjerome.openAnalytics.dtos.requests.StoreSessionRequest;
 import in.oswinjerome.openAnalytics.dtos.responses.ResponseDTO;
+import in.oswinjerome.openAnalytics.models.Event;
 import in.oswinjerome.openAnalytics.models.Project;
 import in.oswinjerome.openAnalytics.models.Session;
+import in.oswinjerome.openAnalytics.repositories.EventRepository;
 import in.oswinjerome.openAnalytics.repositories.SessionRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Slf4j
 public class SessionService {
     private final SessionRepository sessionRepository;
+    private final EventRepository eventRepository;
 
-    public SessionService(SessionRepository sessionRepository) {
+    public SessionService(SessionRepository sessionRepository, EventRepository eventRepository, EventRepository eventRepository1) {
         this.sessionRepository = sessionRepository;
+        this.eventRepository = eventRepository1;
     }
 
     public ResponseDTO<Session> createSession(@Valid StoreSessionRequest request, Project project) {
@@ -33,5 +40,14 @@ public class SessionService {
         });
 
         return ResponseDTO.success(session);
+    }
+
+    public ResponseDTO<List<Event>> getSessionEvents(String sessionId) {
+
+        Session session = sessionRepository.findBySessionId(sessionId).orElseThrow(()->new EntityNotFoundException("Session not found"));
+
+        List<Event> events = eventRepository.findBySession(session);
+
+        return ResponseDTO.success(events);
     }
 }
