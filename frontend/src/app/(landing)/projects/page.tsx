@@ -8,8 +8,10 @@ const page = async () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-4">
-      <h3 className="font-semibold text-2xl ">Projects</h3>
-      <Button>Create</Button>
+      <h3 className="font-semibold text-2xl  ">Projects</h3>
+      <Button className="max-w-[5rem] w-full h-full">
+        <Link className="w-full h-full" href="/projects/create">Create</Link> 
+      </Button>
       </div>
       <div className="grid gap-4">
         {projects.map((project) => (
