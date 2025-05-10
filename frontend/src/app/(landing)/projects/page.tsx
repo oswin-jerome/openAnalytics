@@ -1,4 +1,5 @@
 import { getProjects } from "@/actions/projects";
+import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 
@@ -6,8 +7,10 @@ const page = async () => {
   const projects = (await getProjects()).data;
   return (
     <div className="container mx-auto px-4 py-8">
-      <h3 className="font-semibold text-2xl mb-4">Projects</h3>
-
+      <div className="flex justify-between items-center mb-4">
+      <h3 className="font-semibold text-2xl ">Projects</h3>
+      <Button>Create</Button>
+      </div>
       <div className="grid gap-4">
         {projects.map((project) => (
           <Link key={project.id} href={`/${project.id}/dashboard`}>
