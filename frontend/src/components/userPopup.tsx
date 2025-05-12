@@ -5,9 +5,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { User } from "@/lib/type";
 import { Button } from "./ui/button";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const UserPopup = ({ user }: { user: User }) => {
   //   const { isMobile } = useSidebar();
+  const router = useRouter();
 
   return (
     <DropdownMenu>
@@ -37,6 +39,19 @@ const UserPopup = ({ user }: { user: User }) => {
             </div>
           </div>
         </DropdownMenuLabel>
+        {user && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => {
+                router.push("/projects");
+              }}
+            >
+              <Sparkles className="size-4" />
+              <span className="text-sm">My Projects</span>
+            </DropdownMenuItem>
+          </>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => {
