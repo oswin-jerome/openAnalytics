@@ -36,3 +36,23 @@ export function detectClient() {
 
   return { browser, version, os, device };
 }
+
+const generateSessionId = () => {
+  return crypto.randomUUID?.() || Math.random().toString(36).substring(2);
+};
+export const generateOrUpdateSessionId = () => {
+  const now = Date.now();
+  const lastEvent = parseInt(localStorage.getItem("lastEvent") || "0", 10);
+  const existingSessionId = localStorage.getItem("sessionId");
+
+  const isValid = existingSessionId && now - lastEvent < 5 * 60 * 1000;
+
+  if (isValid) {
+    localStorage.setItem("lastEvent", now.toString());
+    return existingSessionId;
+  }
+  const newSessionId = generateSessionId();
+  localStorage.setItem("sessionId", newSessionId);
+  localStorage.setItem("lastEvent", now.toString());
+  return newSessionId;
+};

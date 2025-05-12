@@ -2,24 +2,29 @@
   "name": "open-analytics-sdk",
   "version": "1.0.1",
   "description": "",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "types": "./dist/index.d.ts"
     },
     "./react": {
-      "types": "./dist/react/index.d.ts",
+      "require": "./dist/react/index.js",
       "import": "./dist/react/index.mjs",
-      "require": "./dist/react/index.js"
+      "types": "./dist/react/index.d.ts"
+    },
+    "./js": {
+      "require": "./dist/js/index.js",
+      "import": "./dist/js/index.mjs",
+      "types": "./dist/js/index.d.ts"
     }
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsup"
+    "build": "tsup --format cjs,esm --dts --sourcemap --clean"
   },
   "files": [
     "dist"

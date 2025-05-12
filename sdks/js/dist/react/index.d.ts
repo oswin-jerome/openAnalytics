@@ -1,1 +1,5 @@
-export { u as useTrackPageView } from '../index-C8PXg8hN.js';
+import { E as EventPayload } from '../types-BMDmW5ZE.js';
+
+declare const useTrackPageView: ({ page, metaData, url }: Partial<Pick<EventPayload, "page" | "metaData" | "url">>) => void;
+
+export { useTrackPageView };
