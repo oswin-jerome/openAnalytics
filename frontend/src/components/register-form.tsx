@@ -48,19 +48,19 @@ export default function RegisterFrom() {
         <p className="text-muted-foreground text-sm text-balance">Enter your Credentials to access your account</p>
       </div>
       <div className="grid gap-6">
-        <div className="grid gap-3">
+        <div className="grid gap-2">
           <Label htmlFor="name">Name</Label>
           <Input id="name" type="text" {...register("name", { required: true })}></Input>
         </div>
-        <div className="grid gap-3">
+        <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
           <Input id="email" type="email" {...register("email", { required: true })}></Input>
         </div>
-        <div className="grid gap-3">
+        <div className="grid gap-2">
           <Label htmlFor="password">Password</Label>
           <Input id="password" type="password" {...register("password", { required: true })}></Input>
         </div>
-        <div className="grid gap-3">
+        <div className="grid gap-2">
           <Label htmlFor="Cpassword">Confirm Password</Label>
           <Input id="Cpassword" type="password"></Input>
         </div>
