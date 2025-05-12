@@ -2,15 +2,9 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Label } from "@radix-ui/react-label";
 import Link from "next/link";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card";
 
-export default function createform() {
+export default function CreateProjectForm() {
   return (
     <form className="max-w-2xl  grid gap-6 ">
       <Card>
@@ -31,17 +25,12 @@ export default function createform() {
         </CardContent>
         <CardFooter>
           <div className="flex w-full justify-end items-center gap-3 max-w-2xl  min-w-full">
-            <Link
-              href="/projects"
-              className=" w-[7rem]  md:max-w-[10rem] md:w-full "
-            >
+            <Link href="/projects" className=" w-[7rem]  md:max-w-[10rem] md:w-full ">
               <Button variant={"outline"} className="w-full">
                 Cancel
               </Button>
             </Link>
-            <Button className=" w-[10rem]  md:max-w-xs md:w-full shadow-sm">
-              Create
-            </Button>
+            <Button className=" w-[10rem]  md:max-w-xs md:w-full shadow-sm">Create</Button>
           </div>
         </CardFooter>
       </Card>
