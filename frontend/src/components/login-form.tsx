@@ -8,7 +8,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 export function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -27,11 +29,13 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
       onSubmit={handleSubmit(async (data) => {
         const res = await signIn("credentials", {
           ...data,
-          redirect: true,
+          redirect: false,
           callbackUrl: "/",
         });
+        console.log(res);
         if (res?.ok) {
           toast.success("Login successful");
+          router.replace("/");
         } else {
           toast.error(res?.error || "Login failed");
         }
@@ -42,11 +46,11 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
         <p className="text-muted-foreground text-sm text-balance">Enter your email below to login to your account</p>
       </div>
       <div className="grid gap-6">
-        <div className="grid gap-3">
+        <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
           <Input id="email" type="email" {...register("email", { required: true })} />
         </div>
-        <div className="grid gap-3">
+        <div className="grid gap-2">
           <div className="flex items-center">
             <Label htmlFor="password">Password</Label>
             <a href="#" className="ml-auto text-sm underline-offset-4 hover:underline">
