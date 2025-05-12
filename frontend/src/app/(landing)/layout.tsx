@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import UserPopup from "@/components/userPopup";
-import { ChartArea, ChartBar, ListStart, LogIn, Newspaper, Signpost } from "lucide-react";
+import { ChartArea, ChartBar, ListStart, LogIn, Newspaper, Signpost, Sparkles } from "lucide-react";
 import type { Metadata } from "next";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -25,39 +25,52 @@ export default function RootLayout({
     <main className="text-primary">
       <nav className="p-4 py-6 flex justify-between items-center text-primary container mx-auto">
         <div className="flex gap-20 items-center">
-          <div className="flex items-center gap-2">
+          <Link href={"/"} className="flex items-center gap-2">
             <ViewTransition name="logo-transition">
               <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
                 <ChartArea className="size-4" />
               </div>
               <div className="text-2xl font-bold">OpenAnalytics</div>
             </ViewTransition>
-          </div>
+          </Link>
           <ul className="gap-8 hidden md:flex">
-            <li>Home</li>
-            <li>About</li>
-            <li>How it works?</li>
+            <Link href={"/"}>
+              <li>Home</li>
+            </Link>
+            <Link href={"/"}>
+              <li>About</li>
+            </Link>
+            <Link href={"/"}>
+              <li>How it works?</li>
+            </Link>
           </ul>
         </div>
         {status != "authenticated" && (
-          <div className="flex gap-4">
-            <Link href={"/login"}>
-              <Button>
-                <LogIn /> Login
+          <>
+            <div className="gap-4 hidden md:flex ">
+              <Link href={"/login"}>
+                <Button>
+                  <LogIn /> Login
+                </Button>
+              </Link>
+              <Link href={"/register"}>
+                <Button variant={"outline"}>
+                  <Newspaper /> Register
+                </Button>
+              </Link>
+            </div>
+            <Link className="md:hidden" href={"/login"}>
+              <Button size={"icon"} variant={"ghost"}>
+                <LogIn />
               </Button>
             </Link>
-            <Link href={"/register"}>
-              <Button variant={"outline"}>
-                <Newspaper /> Register
-              </Button>
-            </Link>
-          </div>
+          </>
         )}
         {status === "authenticated" && (
           <div className="flex gap-4 items-center">
-            <Link href={"/projects"}>
-              <Button>
-                <ChartBar /> Dashboard
+            <Link href={"/projects"} className="hidden md:flex">
+              <Button variant={"ghost"} className="gap-2">
+                <Sparkles /> Projects
               </Button>
             </Link>
             <UserPopup user={data.user} />
