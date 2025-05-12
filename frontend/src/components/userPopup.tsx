@@ -39,15 +39,19 @@ const UserPopup = ({ user }: { user: User }) => {
             </div>
           </div>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          onClick={() => {
-            router.push("/projects");
-          }}
-        >
-          <Sparkles className="size-4" />
-          <span className="text-sm">My Projects</span>
-        </DropdownMenuItem>
+        {user && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => {
+                router.push("/projects");
+              }}
+            >
+              <Sparkles className="size-4" />
+              <span className="text-sm">My Projects</span>
+            </DropdownMenuItem>
+          </>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => {
