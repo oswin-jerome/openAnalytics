@@ -26,6 +26,9 @@ export const fetchHelper = async (url: string, options: RequestInit) => {
     headers: headers,
   });
 
+  if (response.status == 429) {
+    console.warn("Rate limit exceeded");
+  }
   if (response.status == 401) {
     // console.error(await response.json());
     // logout();
