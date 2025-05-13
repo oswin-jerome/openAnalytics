@@ -26,7 +26,7 @@ public class SessionController {
 
     @GetMapping("/events")
     @Tag(name = "Session")
-    public ResponseDTO<List<Event>> getSessionEvents(@PathVariable("sessionId") String sessionId) {
+    public ResponseDTO<SessionService.SessionWithEvent> getSessionEvents(@PathVariable("sessionId") String sessionId) {
 //        FIXME: make is a sub route of project. Think about it
         return sessionService.getSessionEvents(sessionId);
     }

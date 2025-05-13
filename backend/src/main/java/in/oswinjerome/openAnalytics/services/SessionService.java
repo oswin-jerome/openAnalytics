@@ -42,12 +42,14 @@ public class SessionService {
         return ResponseDTO.success(session);
     }
 
-    public ResponseDTO<List<Event>> getSessionEvents(String sessionId) {
+    public ResponseDTO<SessionWithEvent> getSessionEvents(String sessionId) {
 
         Session session = sessionRepository.findBySessionId(sessionId).orElseThrow(()->new EntityNotFoundException("Session not found"));
 
         List<Event> events = eventRepository.findBySession(session);
 
-        return ResponseDTO.success(events);
+        return ResponseDTO.success(new SessionWithEvent(session,events));
     }
+
+    public record SessionWithEvent(Session session, List<Event> events){}
 }
