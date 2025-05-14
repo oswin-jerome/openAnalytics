@@ -16,26 +16,9 @@ const AppSideBar = () => {
     required: true,
   });
   return (
-    <Sidebar variant="floating" collapsible="icon" className="">
-      <SidebarHeader className="">
-        {/* <SidebarMenu className="">
-            <SidebarMenuItem>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <SidebarMenuButton size={"lg"}>
-                    Select a project <ChevronDown className="ml-auto aspect-square" />
-                  </SidebarMenuButton>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-full">
-                  <DropdownMenuItem>Project 1</DropdownMenuItem>
-                  <DropdownMenuItem>Project 2</DropdownMenuItem>
-                  <DropdownMenuItem>Project 3</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </SidebarMenuItem>
-          </SidebarMenu> */}
-      </SidebarHeader>
-      <SidebarContent>
+    <Sidebar variant="sidebar" collapsible="icon" className="">
+      <SidebarHeader className=""></SidebarHeader>
+      <SidebarContent className="">
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu className="">
