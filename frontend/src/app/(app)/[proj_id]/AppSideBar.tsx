@@ -2,9 +2,10 @@
 
 import { NavUser } from "@/components/nav-user";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { SelectSeparator } from "@/components/ui/select";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
-import { BowArrow, ChartAreaIcon, ChevronDown, DnaIcon, Home, SearchSlashIcon, WorkflowIcon } from "lucide-react";
+import { BowArrow, ChartAreaIcon, ChevronDown, ChevronFirst, Clock10, DnaIcon, Home, SearchSlashIcon, Settings2, WorkflowIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter, useParams } from "next/navigation";
@@ -39,14 +40,14 @@ const AppSideBar = () => {
               <SidebarMenuItem>
                 <SidebarMenuButton asChild isActive={path.endsWith("/sessions")}>
                   <Link href={`/${proj_id}/sessions`}>
-                    <BowArrow /> Sessions
+                    <Clock10 /> Sessions
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={path === "/projects"}>
-                  <Link href={"/projects"}>
-                    <WorkflowIcon /> Projects
+                <SidebarMenuButton asChild isActive={path === "/settings"}>
+                  <Link href={`/${proj_id}/settings`}>
+                    <Settings2 /> Settings
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -55,6 +56,14 @@ const AppSideBar = () => {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
+        <SidebarMenuItem>
+          <SidebarMenuButton asChild isActive={path === "/projects"}>
+            <Link href={"/projects"}>
+              <WorkflowIcon /> Projects
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SelectSeparator />
         <NavUser user={data!.user} />
       </SidebarFooter>
     </Sidebar>
