@@ -1,8 +1,10 @@
 import { getEvents } from "@/actions/events";
 import { getSessions } from "@/actions/sessions";
+import ViewSessionDetails from "@/components/popup/ViewSessionDetails";
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { PageParams } from "@/lib/type";
 import { formatDate, formatSeconds } from "@/lib/utils";
+import Link from "next/link";
 
 const EventsPage = async ({ params }: { params: PageParams }) => {
   const { proj_id } = await params;
@@ -42,7 +44,9 @@ const EventsPage = async ({ params }: { params: PageParams }) => {
                   <TableCell>{formatSeconds(session.duration)}</TableCell>
                   <TableCell>{formatDate(session.createdAt)}</TableCell>
                   <TableCell>{formatDate(session.updatedAt)}</TableCell>
-                  <TableCell>{session.noOfEvents}</TableCell>
+                  <TableCell>
+                    <Link href={`/${proj_id}/sessions/${session.sessionId}`}>{session.noOfEvents}</Link>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

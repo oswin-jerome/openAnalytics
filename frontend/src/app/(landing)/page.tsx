@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main>
+    <main className="bg-secondary">
       <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4 container mx-auto min-h-[90dvh]">
         <section className="mt-20">
           <h1 className="text-6xl text-primary/80">

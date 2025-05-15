@@ -27,7 +27,6 @@ const DashboardPage = async ({ params, searchParams }: { params: PageParams; sea
   return (
     <main>
       <div className="mb-4">
-        {res.data.apiKey}
         <DurationFilter />
       </div>
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
