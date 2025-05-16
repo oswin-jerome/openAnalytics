@@ -26,4 +26,9 @@ public class StatsController {
         return statsService.getLatestEvents(projectId);
     }
 
+    @GetMapping("session-count-in-window")
+    public ResponseDTO<List<StatsService.SessionWindowCount>> getSessionCountInWindow(@PathVariable("projectId") String projectId) {
+        return statsService.getSessionCountInWindow(projectId);
+    }
+
 }

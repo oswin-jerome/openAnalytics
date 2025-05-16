@@ -1,6 +1,6 @@
 "use server";
 import { fetchHelper } from "@/lib/fetchHelper";
-import { ApiResponse, Event, PageableResponse, Project, Session } from "@/lib/type";
+import { ApiResponse, Event, PageableResponse, Project, Session, SessionWithCount } from "@/lib/type";
 import { User } from "next-auth";
 
 export const getSessions = async (proj_id: string) => {
@@ -22,6 +22,18 @@ export const getASessionWithEvents = async (sessionId: string) => {
     session: Session;
     events: Event[];
   }> = await res.json();
+
+  return data;
+};
+
+export const getSessionWithCountForChart = async (proj_id: string) => {
+  const res = await fetchHelper(process.env.API_URL + `/stats/${proj_id}/session-count-in-window`, {
+    method: "get",
+  });
+
+  const data: ApiResponse<SessionWithCount[]> = await res.json();
+
+  console.log(data);
 
   return data;
 };
