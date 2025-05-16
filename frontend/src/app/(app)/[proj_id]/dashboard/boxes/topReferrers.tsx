@@ -4,7 +4,7 @@ import { EventCount, Project } from "@/lib/type";
 
 const TopReferrers = ({ topReferrers }: { topReferrers: EventCount[] | undefined }) => {
   return (
-    <Card className="xl:col-span-2">
+    <Card className="">
       <CardHeader>
         <CardTitle>Top Referrers</CardTitle>
       </CardHeader>

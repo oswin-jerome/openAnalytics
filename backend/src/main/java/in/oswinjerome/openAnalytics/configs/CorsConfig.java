@@ -25,12 +25,18 @@ public class CorsConfig {
         return new CorsWebFilter(source);
     }
 
-        @Bean
+    @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**") // Allow all paths
+                registry.addMapping("/sse/**") // Allow all paths
+                        .allowedOriginPatterns("http://localhost:3000","https://oa.oswinjerome.in") // Update to your frontend's origin
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true); // Allow cookies/auth headers
+
+                registry.addMapping("/api/**") // Allow all paths
                         .allowedOriginPatterns("*") // Update to your frontend's origin
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")

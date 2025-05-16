@@ -10,12 +10,14 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter, useParams } from "next/navigation";
 import { ReactNode, useEffect } from "react";
+import { toast } from "sonner";
 const AppSideBar = () => {
   const path = usePathname();
   const { proj_id } = useParams();
   const { status, data } = useSession({
     required: true,
   });
+
   return (
     <Sidebar variant="sidebar" collapsible="icon" className="">
       <SidebarHeader className=""></SidebarHeader>

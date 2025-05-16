@@ -11,6 +11,7 @@ import in.oswinjerome.openAnalytics.repositories.ProjectRepository;
 import in.oswinjerome.openAnalytics.repositories.SessionRepository;
 import in.oswinjerome.openAnalytics.services.ProjectService;
 import in.oswinjerome.openAnalytics.services.SessionService;
+import in.oswinjerome.openAnalytics.services.SseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -25,12 +26,14 @@ public class EventConsumer {
     private final ProjectRepository projectRepository;
     private final EventRepository eventRepository;
     private final SessionRepository sessionRepository;
+    private final SseService sseService;
 
-    public EventConsumer(SessionService sessionService, ProjectRepository projectRepository, EventRepository eventRepository, SessionRepository sessionRepository, SessionRepository sessionRepository1) {
+    public EventConsumer(SessionService sessionService, ProjectRepository projectRepository, EventRepository eventRepository, SessionRepository sessionRepository, SessionRepository sessionRepository1, SseService sseService) {
         this.sessionService = sessionService;
         this.projectRepository = projectRepository;
         this.eventRepository = eventRepository;
         this.sessionRepository = sessionRepository1;
+        this.sseService = sseService;
     }
 
     @KafkaListener(topics = "${my.topic1}", groupId = "${spring.kafka.consumer.group-id}")
@@ -63,7 +66,7 @@ public class EventConsumer {
         eventRepository.save(event);
         session.setUpdatedAt(LocalDateTime.now());
         sessionRepository.save(session);
-
+        sseService.sendMessage(project.getId(),event);
         log.info("Saved event: {}", event);
 
     }

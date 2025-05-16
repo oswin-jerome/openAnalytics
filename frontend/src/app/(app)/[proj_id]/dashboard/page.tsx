@@ -10,6 +10,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem } from "@/component
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Label } from "@/components/ui/label";
 import DurationFilter from "@/components/duration-filter";
+import LatestEvents from "./boxes/LatestEvents";
+import { getLatestEvents } from "@/actions/events";
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 const DashboardPage = async ({ params, searchParams }: { params: PageParams; searchParams: SearchParams }) => {
@@ -17,6 +19,7 @@ const DashboardPage = async ({ params, searchParams }: { params: PageParams; sea
   const search = await searchParams;
 
   const res = await getProject(proj_id, search.duration as string);
+  const events = (await getLatestEvents(proj_id)).data;
   if (!res.success) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -29,8 +32,9 @@ const DashboardPage = async ({ params, searchParams }: { params: PageParams; sea
       <div className="mb-4">
         <DurationFilter />
       </div>
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 ">
         {/* <VisitorsChart /> */}
+        <LatestEvents project_id={proj_id} events={events} />
         <TopPages topPages={res.data.metrics?.topPages} />
         <TopReferrers topReferrers={res.data.metrics?.topReferrers} />
         <UserAgentCounts userAgentCounts={res.data.metrics?.userAgentCounts} />
