@@ -66,7 +66,7 @@ public class EventConsumer {
         eventRepository.save(event);
         session.setUpdatedAt(LocalDateTime.now());
         sessionRepository.save(session);
-        sseService.sendMessage(project.getId(),event);
+        sseService.sendMessage("latest_events",project.getId(),event);
         log.info("Saved event: {}", event);
 
     }

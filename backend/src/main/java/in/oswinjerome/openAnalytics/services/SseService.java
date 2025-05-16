@@ -15,47 +15,55 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 @Slf4j
 public class SseService {
 
-    private final Map<String, List<SseEmitter>> sseEmitters = new ConcurrentHashMap<>();
+    private final Map<String, Map<String, ConcurrentLinkedQueue<SseEmitter>>> subscriptions = new ConcurrentHashMap<>();
+    private final ObjectMapper mapper;
 
-    public SseEmitter register(String clientId) {
+    public SseService(ObjectMapper mapper) {
+        this.mapper = mapper;
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    }
+
+    public SseEmitter register(String eventType,String clientId) {
         SseEmitter sseEmitter = new SseEmitter(0L);
-        sseEmitters.computeIfAbsent(clientId, k -> new CopyOnWriteArrayList<>()).add(sseEmitter);
+        subscriptions.computeIfAbsent(clientId, k -> new ConcurrentHashMap<>());
+        subscriptions.get(clientId)
+                .computeIfAbsent(eventType, k -> new ConcurrentLinkedQueue<>())
+                .add(sseEmitter);
 
-        sseEmitter.onCompletion(() -> sseEmitters.remove(clientId));
-        sseEmitter.onTimeout(() -> sseEmitters.remove(clientId));
-        sseEmitter.onError(error -> sseEmitters.remove(clientId));
-
+        sseEmitter.onCompletion(() -> remove(eventType,clientId,sseEmitter));
+        sseEmitter.onTimeout(() -> remove(eventType,clientId,sseEmitter));
+        sseEmitter.onError(error -> remove(eventType,clientId,sseEmitter));
+        log.info(subscriptions.toString());
         return sseEmitter;
     }
 
-    public void remove(String clientId, SseEmitter emitter) {
-        List<SseEmitter> clientEmitters = sseEmitters.get(clientId);
+    public void remove(String eventType,String clientId, SseEmitter emitter) {
+        ConcurrentLinkedQueue<SseEmitter> clientEmitters = subscriptions.get(clientId).get(eventType);
 
         if (clientEmitters != null) {
             clientEmitters.remove(emitter);
         }
     }
 
-    public void sendMessage(String clientId, Event message) {
+    public void sendMessage(String eventType,String clientId, Object message) {
         log.info("SseService sendMessage");
-        List<SseEmitter> clientEmitters = sseEmitters.get(clientId);
+        ConcurrentLinkedQueue<SseEmitter> clientEmitters = subscriptions.get(clientId).get(eventType);
         if (clientEmitters == null) return;
         List<SseEmitter> deadEmitters = new ArrayList<>();
-
+        log.info(String.valueOf(clientEmitters.size()));
         for (SseEmitter emitter : clientEmitters) {
             try {
-                ObjectMapper mapper = new ObjectMapper();
-                mapper.registerModule(new JavaTimeModule());
-                mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
-                emitter.send(SseEmitter.event().id("new_event").data(mapper.writeValueAsString(message)));
-            } catch (IOException e) {
+                emitter.send(SseEmitter.event().name(eventType).id(eventType).data(mapper.writeValueAsString(message)));
+                log.info("SseEmitter sent");
+            } catch (Exception e) {
                 deadEmitters.add(emitter);
                 log.error(e.getMessage());
                 log.info("SSE Dead");
@@ -67,16 +75,24 @@ public class SseService {
     @Scheduled(fixedRate = 15000)
     public void sendHeartbeat() {
         log.info("SseService: Sending heartbeat...");
-        for (var entry : sseEmitters.entrySet()) {
-            List<SseEmitter> deadEmitters = new ArrayList<>();
-            for (SseEmitter emitter : entry.getValue()) {
-                try {
-                    emitter.send(SseEmitter.event().comment("heartbeat"));
-                } catch (IOException e) {
-                    deadEmitters.add(emitter);
-                }
+
+        subscriptions.forEach((clientId, clientSubscriptions) -> {
+            clientSubscriptions.forEach((eventType, eventEmitter) -> {
+                eventEmitter.removeIf(e->{
+                    try{
+                        e.send(SseEmitter.event().name("heartbeat").comment("heartbeat"));
+                        log.info("SSE Heartbeat DONE");
+                        return false;
+                    }catch (Exception ex){
+                        log.error(ex.getMessage());
+                        log.info("SSE Heartbeat");
+                        return true;
+                    }
+                });
+            });
+            if(clientSubscriptions.isEmpty()) {
+                subscriptions.remove(clientId);
             }
-            entry.getValue().removeAll(deadEmitters);
-        }
+        });
     }
 }
