@@ -12,7 +12,7 @@ WORKDIR /app
 COPY frontend/package*.json ./
 RUN npm install
 COPY frontend .
-# COPY frontend/.env.local ./.env
+COPY frontend/.env.prod ./.env
 RUN npm run build
 
 

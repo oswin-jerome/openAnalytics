@@ -38,6 +38,15 @@ public class JwtFilter extends OncePerRequestFilter {
 
 
         String authHeader = request.getHeader("Authorization");
+
+        if(authHeader == null) {
+//            Since we allow user to pass token as a req parameter as well
+            authHeader = request.getParameter("auth_token");
+            if(authHeader!=null){
+                authHeader = "Bearer " + authHeader;
+            }
+        }
+
 //        Auth header is needed in required format to proceed with the flow
         if(authHeader == null || !authHeader.startsWith("Bearer ")){
             filterChain.doFilter(request, response);
