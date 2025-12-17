@@ -46,3 +46,5 @@ springdoc:
     persistAuthorization: true
 server:
   port: 8080
+
+  shutdown: immediate

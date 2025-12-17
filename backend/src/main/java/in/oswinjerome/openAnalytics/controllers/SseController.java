@@ -27,7 +27,7 @@ public class SseController {
         if (user == null) {
             return null;
         }
-        return  sseService.register(projId);
+        return  sseService.register("latest_events",projId);
     }
 
 

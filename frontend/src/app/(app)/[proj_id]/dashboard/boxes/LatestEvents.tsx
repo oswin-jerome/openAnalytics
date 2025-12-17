@@ -23,15 +23,15 @@ const LatestEvents = ({ project_id, events }: { project_id: string; events: Even
     const es = new EventSource(process.env.NEXT_PUBLIC_API_URL + `/sse/${project_id}/events?auth_token=${userData.auth_token}`, {
       // withCredentials: true,
     });
+    es.addEventListener("latest_events", (event) => {
+      console.log("Received heartbeat:", event.data);
+      setData((prevData) => [JSON.parse(event.data), ...prevData]);
+    });
     setEventSource(es);
     console.log("EventSource: added");
 
     es.onmessage = function (e) {
       console.log(e);
-      if (e.lastEventId == "new_event") {
-        console.log("New event:", e.data);
-        setData((prevData) => [JSON.parse(e.data), ...prevData]);
-      }
     };
 
     es.onerror = function (err) {

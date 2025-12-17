@@ -117,3 +117,8 @@ export interface Session {
   duration: number;
   noOfEvents?: number;
 }
+
+export interface SessionWithCount {
+  windowStart: Date;
+  sessionCount: number;
+}
